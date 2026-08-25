@@ -18,5 +18,5 @@ jobs:
 
     - name: Playit Indir ve Baslat
       run: |
-        Invoke-WebRequest -Uri "https://playit-cloud.github.io/source/playit-setup-0.15.26.exe" -OutFile "playit.exe"
+        Invoke-WebRequest -Uri "https://github.com/playit-cloud/playit-agent/releases/download/v0.15.26/playit-windows-x86_64-signed.exe" -OutFile "playit.exe"
         .\playit.exe
