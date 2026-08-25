@@ -16,6 +16,10 @@ jobs:
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0
         net user runneradmin Sifre12345!
 
-    - name: Tuneli Baslat
+    - name: Cloudflare Indir
       run: |
-        ssh -p 443 -R0:localhost:3389 -o StrictHostKeyChecking=no -o ServerAliveInterval=30 a.pinggy.io
+        Invoke-WebRequest https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe -OutFile cloudflared.exe
+
+    - name: Tuneli Baslat ve Adresi Goster
+      run: |
+        .\cloudflared.exe tunnel --url rdp://localhost:3389
