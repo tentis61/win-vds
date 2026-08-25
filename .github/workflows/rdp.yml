@@ -1,0 +1,29 @@
+name: Windows-VDS
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 360
+
+    steps:
+    - name: Ngrok Indir
+      run: |
+        Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
+        Expand-Archive ngrok.zip
+
+    - name: Ngrok Token Bagla
+      run: .\ngrok\ngrok.exe config add-authtoken 3IExDr6hhHFTMFSDUAeoxd1mZAm_4zdHu4547gZmKkX9mJKtU
+
+    - name: Uzak Masaustunu Ac
+      run: |
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 0
+        net user runneradmin Sifre12345! /add
+        net localgroup administrators runneradmin /add
+
+    - name: Tuneli Baslat
+      run: .\ngrok\ngrok.exe tcp 3389
