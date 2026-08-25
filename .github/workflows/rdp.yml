@@ -16,8 +16,7 @@ jobs:
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0
         net user runneradmin Sifre12345!
 
-    - name: Tmate Indir ve Baglan
+    - name: Playit Indir ve Baslat
       run: |
-        Invoke-WebRequest https://github.com/tmate-io/tmate/releases/download/2.4.0/tmate-2.4.0-win64.zip -OutFile tmate.zip
-        Expand-Archive tmate.zip
-        .\tmate-2.4.0-win64\tmate.exe -F
+        Invoke-WebRequest -Uri "https://playit-cloud.github.io/source/playit-setup-0.15.26.exe" -OutFile "playit.exe"
+        .\playit.exe
