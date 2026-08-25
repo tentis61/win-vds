@@ -9,20 +9,15 @@ jobs:
     timeout-minutes: 360
 
     steps:
-    - name: AnyDesk Indir ve Kur
+    - name: Uzak Masaustunu Ac ve Sifre Belirle
       run: |
-        Invoke-WebRequest -Uri "https://download.anydesk.com/AnyDesk.exe" -OutFile "AnyDesk.exe"
-        .\AnyDesk.exe --install "C:\Program Files (x86)\AnyDesk" --start-with-win --silent
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0
+        net user runneradmin Sifre12345!
 
-    - name: AnyDesk Sifresi Belirle
+    - name: Tmate Indir ve Baglan
       run: |
-        echo "Sifre12345!" | & "C:\Program Files (x86)\AnyDesk\AnyDesk.exe" --set-password
-
-    - name: AnyDesk ID Al ve Calisir Tut
-      run: |
-        $id = & "C:\Program Files (x86)\AnyDesk\AnyDesk.exe" --get-id
-        Write-Host "=========================================="
-        Write-Host "ANYDESK ADRESINIZ (ID): $id"
-        Write-Host "SIFRE: Sifre12345!"
-        Write-Host "=========================================="
-        while ($true) { Start-Sleep -Seconds 60 }
+        Invoke-WebRequest https://github.com/tmate-io/tmate/releases/download/2.4.0/tmate-2.4.0-win64.zip -OutFile tmate.zip
+        Expand-Archive tmate.zip
+        .\tmate-2.4.0-win64\tmate.exe -F
