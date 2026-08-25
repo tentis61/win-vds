@@ -9,14 +9,6 @@ jobs:
     timeout-minutes: 360
 
     steps:
-    - name: Ngrok Kur
-      run: |
-        choco install ngrok -y
-
-    - name: Ngrok Token Bagla
-      run: |
-        ngrok config add-authtoken 3IExDr6hhHFTMFSDUAeoxd1mZAm_4zdHu4547gZmKkX9mJKtU
-
     - name: Uzak Masaustunu Ac ve Sifre Belirle
       run: |
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
@@ -24,6 +16,6 @@ jobs:
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0
         net user runneradmin Sifre12345!
 
-    - name: Baglantiyi Baslat
+    - name: Tuneli Baslat
       run: |
-        ngrok tcp 3389
+        ssh -p 443 -R0:localhost:3389 -o StrictHostKeyChecking=no -o ServerAliveInterval=30 a.pinggy.io
